@@ -8,15 +8,17 @@ import requests
 
 # Creating Classes 
 class Restaurant:
-     def __init__(self, restaurant_name, rating, cuisine):
-          self.restaurant_name = restaurant_name
+     def __init__(self, restaurant_id, restaurant_name, rating, cuisine):
+          self.id = restaurant_id
+          self.name = restaurant_name
           self.rating = rating 
           self.cuisine = cuisine
 
 class Category:
-     def __init__(self, cuisine_name, cuisine_type):
-          self.cuisine_name = cuisine_name
-          self.cuisine_type = cuisine_type
+     def __init__(self, category_id, category_name, category_group):
+          self.id = category_id
+          self.name = category_name
+          self.group = category_group
 
 # Determining which city and state the user is in 
 city = input("Please enter the name of a city: ").replace(" ", "-")
@@ -130,14 +132,4 @@ for i, restaurant in enumerate(restaurant_list):
           "Rating": rating_list[i]
      }
      print(data)
-
-
-" MAKING THE RECOMMENDER "
-"""
-a1 = input("Would you like a recommendation? (Y/N)")
-a2 = a1.lower()
-
-# Making a Yes/No function that returns Y/N 
-def Yes_or_No():
-"""
 
