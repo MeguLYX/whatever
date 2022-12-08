@@ -8,15 +8,16 @@ import requests
 
 # Creating Classes 
 class Restaurant:
-     def __init__(self, restaurant_id, restaurant_name, rating, cuisine):
-          self.id = restaurant_id
+     def __init__(self, restaurant_name, rating, cuisine):
           self.name = restaurant_name
           self.rating = rating 
           self.cuisine = cuisine
+     
+     def __repr__(self):
+          return self.name
 
 class Category:
-     def __init__(self, category_id, category_name, category_group):
-          self.id = category_id
+     def __init__(self, category_name, category_group):
           self.name = category_name
           self.group = category_group
 
@@ -110,26 +111,28 @@ data = {}
 
 # By using Inspect Element, we can see that UberEats uses <h3> tag to identify restaurant names
 # Therefore, we can use the <h3> tag to get all the restaurants available
-for x in soup.findAll("h3")[:80]: 
-     restaurant_name = x.get_text()
-     restaurant_list.append(restaurant_name)
-     rating = soup.find("div", text = restaurant_name).findNext("div").text 
-     rating_list.append(rating)
-     cuisine = []
-     for child in x.parent.parent.find("span").parent:
-          content = child.text.replace('\xa0•\xa0',"")
-          if content == "":
-               continue
-          cuisine.append(content) 
-     cuisine_list.append(cuisine)
+def webscraper():
+     for x in soup.findAll("h3")[:80]: 
+          restaurant_name = x.get_text()
+          rating = soup.find("div", text = restaurant_name).findNext("div").text
+          cuisine = []
+          for child in x.parent.parent.find("span").parent:
+               content = child.text.replace('\xa0•\xa0',"")
+               if content == "":
+                    continue
+               cuisine.append(content) 
+          restaurant_list.append(Restaurant(restaurant_name, rating, cuisine))
 
 
 # Compiling all the 3 lists together into a dictonary 
-for i, restaurant in enumerate(restaurant_list):
-     data = {}
-     data[restaurant] = {
-          "Food Genre": cuisine_list[i],
-          "Rating": rating_list[i]
-     }
-     print(data)
+def data_function():
+     for restaurant in restaurant_list:
+          data = {}
+          data[restaurant] = {
+               "Food Genre": restaurant.cuisine,
+               "Rating": restaurant.rating
+          }
+          print(data)
 
+webscraper()
+data_function()
